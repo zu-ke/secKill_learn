@@ -1,0 +1,91 @@
+spring:
+  thymeleaf:
+    #关闭缓存
+    cache: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: Lgx1420070846@
+    # 数据库连接池
+    hikari:
+      #连接池名
+      pool-name: ZuKe_Hikari_Poll
+      #最小空闲连接
+      minimum-idle: 5
+      #空闲连接存活最大时间，默认60000(10分钟)
+      idle-timeout: 60000
+      # 最大连接数，默认是10
+      maximum-pool-size: 10
+      #从连接池返回来的连接自动提交
+      auto-commit: true
+      #连接最大存活时间。0表示永久存活，默认180000（30分钟）
+      max-lifetime: 180000
+      #连接超时时间，默认30000（30秒）
+      connection-timeout: 30000
+      #测试连接是否可用的查询语句
+      connection-test-query: select 1
+  #配置Redis
+  redis:
+    host: 192.168.220.203
+    port: 6379
+    database: 0
+    timeout: 10000ms
+    lettuce:
+      pool:
+        #最大连接数,默认是8
+        max-active: 16
+        #最大连接等待/阻塞时间,默认-1
+        max-wait: 10000ms
+        #最大空闲连接
+        max-idle: 200
+        #最小空闲连接，默认0
+        min-idle: 5
+  rabbitmq:
+    #IP和用户
+    host: 192.168.220.203
+    username: guest
+    password: guest
+    #虚拟主机
+    virtual-host: /
+    #端口
+    port: 5672
+    #相关监听器
+    listener:
+      simple:
+        #消费者最小数量
+        concurrency: 10
+        #消费者最大数量
+        max-concurrency: 10
+        #限制消费者每次只能处理一条消息，处理完才能处理下一条消息
+        prefetch: 1
+        #启动时默认启动容器
+        auto-startup: true
+        #消息被拒绝时，重新进入消息队列【消息处理失败或者没处理】，提升消息处理可靠性
+        default-requeue-rejected: true
+    #模板相关
+    template:
+      retry:
+        #启用重试机制【如果消息处理失败了，进行重试】
+        enabled: true
+        #重试时间间隔【失败以后，1秒以后重试（第一次重试时间，第二次不确定）】
+        initial-interval: 1000ms
+        #重试最大次数
+        max-attempts: 3
+        #重试最大时间间隔【重试时最长等待时间，每次重试最长等待时间不能超过这个时间】
+        max-interval: 10000ms
+        #重试时间间隔的乘数【第一次重试等待1000ms，第二次重试等待1000ms * 2，第三次重试等待1000ms * 2 * 2】
+        multiplier: 2
+
+#mybatis-plus配置
+mybatis-plus:
+  #配置mapper.xml映射文件
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  #配置mybatis数据返回类型别名
+  type-aliases-package: com.hspedu.seckill.pojo
+#mybatis sql 打印
+logging:
+  level:
+    com.hspedu.seckill.mapper: debug
+server:
+  port: 9999
